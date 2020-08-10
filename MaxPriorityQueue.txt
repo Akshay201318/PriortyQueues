@@ -1,0 +1,120 @@
+import java.util.*;
+ /*************
+ * Following is the main function for your reference which we are using internally.
+ 
+ public static void main(String[] args) {
+		PriorityQueue pq = new PriorityQueue();
+		int choice = s.nextInt();
+		while(choice != -1) {
+			switch(choice) {
+				case 1 : // insert
+					int element = s.nextInt();
+					pq.insert(element);
+					break;
+				case 2 : // getMax
+					System.out.println(pq.getMax());
+					break;
+				case 3 : // removeMax
+					System.out.println(pq.removeMax());
+					break;
+				case 4 : // size
+					System.out.println(pq.getSize());
+					break;
+				case 5 : // isEmpty
+					System.out.println(pq.isEmpty());
+				default :
+						return;
+			}
+			choice = s.nextInt();
+		}
+	}
+************/
+class PriorityQueueException extends Exception {
+
+}
+
+public class PriorityQueue {
+    
+    private ArrayList<Integer> heap;
+
+	public PriorityQueue() {
+		heap = new ArrayList<Integer>();
+	}
+
+	boolean isEmpty(){
+		return heap.size() == 0;
+	}
+
+	int getSize(){
+		return heap.size();
+	}
+
+	int getMax() {
+		if(isEmpty()){
+			// Throw an exception
+			return Integer.MAX_VALUE;
+		}
+		return heap.get(0);
+	}
+
+	void insert(int element){
+		heap.add(element);
+		int childIndex = heap.size() - 1;
+		int parentIndex = (childIndex - 1) / 2;
+
+		while(childIndex > 0){
+			if(heap.get(childIndex) > heap.get(parentIndex)){
+				int temp = heap.get(childIndex);
+				heap.set(childIndex, heap.get(parentIndex));
+				heap.set(parentIndex, temp);
+				childIndex = parentIndex;
+				parentIndex = (childIndex - 1) / 2;
+			}else{
+				return;
+			}
+		}
+	}
+
+	int removeMax()  {
+        if(isEmpty()){
+			// Throw an exception
+			return Integer.MAX_VALUE;
+		}
+        else
+        {
+           int  temp= heap.get(getSize()-1);
+            int min=heap.get(0);
+            heap.remove(getSize()-1);
+            heap.set(0,temp);
+            int parentIndex=0;
+            int childIndex1=1;
+            int childIndex2=2;
+            while(childIndex1<heap.size())
+            {
+                int minIndex=parentIndex;
+                if(heap.get(childIndex1)>heap.get(minIndex))
+                {
+                    minIndex=childIndex1;
+                }
+                if(childIndex2<heap.size() && (heap.get(childIndex2)>heap.get(minIndex)))
+                {
+                    minIndex=childIndex2;
+                }
+               if(minIndex==parentIndex)
+                   break;
+                
+                int temp1=heap.get(minIndex);
+                heap.set(minIndex,heap.get(parentIndex));
+                heap.set(parentIndex,temp1);
+                parentIndex=minIndex;
+                childIndex1=2*parentIndex+1;
+                childIndex2=2*parentIndex+2;
+            }
+            return min;
+        }
+		// Complete this function
+		// Throw the exception PriorityQueueException if queue is empty
+	}
+	// Complete this class
+	
+}
